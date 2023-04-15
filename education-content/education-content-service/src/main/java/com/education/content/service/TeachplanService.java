@@ -15,6 +15,6 @@ public interface TeachplanService {
  * @date 2022/9/9 11:13
 */
  public List<TeachplanDto> findTeachplanTree(long courseId);
- public void saveTeachplan(SaveTeachplanDto teachplanDto);
+ public void saveTeachplan(SaveTeachplanDto saveTeachplanDto);
 
  }

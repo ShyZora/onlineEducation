@@ -1,9 +1,9 @@
 spring:
   application:
-    name: gateway
+    name: gate
   cloud:
     nacos:
-      server-addr: 127.0.0.1:8848
+      server-addr: 192.168.42.1:8848
       discovery:
         namespace: dev
         group: education-project
@@ -12,9 +12,9 @@ spring:
         group: education-project
         file-extension: yaml
         refresh-enabled: true
-        shared-configs:
-          - data-id: logging-${spring.profiles.active}.yaml
-            group: xuecheng-plus-common
-            refresh: true
+#        shared-configs:
+#          - data-id: logging-${spring.profiles.active}.yaml
+#            group: xuecheng-plus-common
+#            refresh: true
   profiles:
     active: dev

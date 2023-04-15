@@ -26,25 +26,25 @@ public class TeachplanServiceImpl implements TeachplanService {
 
     @Transactional
     @Override
-    public void saveTeachplan(SaveTeachplanDto teachplanDto) {
+    public void saveTeachplan(SaveTeachplanDto saveTeachplanDto) {
+        Long teachplanId = saveTeachplanDto.getId();
+        if(teachplanId ==null){
+            //新增
+            Teachplan teachplan = new Teachplan();
+            BeanUtils.copyProperties(saveTeachplanDto,teachplan);
+            //确定排序字段，找到它的同级节点个数，排序字段就是个数加1  select count(1) from teachplan where course_id=117 and parentid=268
+            Long parentid = saveTeachplanDto.getParentid();
+            Long courseId = saveTeachplanDto.getCourseId();
+            int teachplanCount = getTeachplanCount(courseId, parentid);
+            teachplan.setOrderby(teachplanCount);
+            teachplanMapper.insert(teachplan);
 
-        //课程计划id
-        Long id = teachplanDto.getId();
-        //修改课程计划
-        if(id!=null){
-            Teachplan teachplan = teachplanMapper.selectById(id);
-            BeanUtils.copyProperties(teachplanDto,teachplan);
-            teachplanMapper.updateById(teachplan);
         }else{
-            //取出同父同级别的课程计划数量
-            int count = getTeachplanCount(teachplanDto.getCourseId(), teachplanDto.getParentid());
-            Teachplan teachplanNew = new Teachplan();
-            //设置排序号
-            teachplanNew.setOrderby(count+1);
-            BeanUtils.copyProperties(teachplanDto,teachplanNew);
-
-            teachplanMapper.insert(teachplanNew);
-
+            //修改
+            Teachplan teachplan = teachplanMapper.selectById(teachplanId);
+            //将参数复制到teachplan
+            BeanUtils.copyProperties(saveTeachplanDto,teachplan);
+            teachplanMapper.updateById(teachplan);
         }
 
     }
